@@ -186,6 +186,7 @@ export default function Answer() {
         displayState={displayState}
         updateDisplayState={updateDisplayState}
         onUpload={onUpload}
+        message={answerStore.message}
       />
       <div id="answerContentContainer">
         <pageStatus.Display />

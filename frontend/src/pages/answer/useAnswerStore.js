@@ -16,6 +16,7 @@ export default function useAnswerStore() {
   const [selectedResult, setSelectedResult] = useState({});
   const [selectedRowId, setSelectedRowId] = useState('');
   const [metaData, setMetaData] = useState({});
+  const [resultJSON, setResultJSON] = useState({});
   const { colorMap, hierarchies } = useContext(BiolinkContext);
 
   /**
@@ -24,6 +25,8 @@ export default function useAnswerStore() {
   function resetAnswerExplorer() {
     setSelectedResult({});
     setSelectedRowId('');
+    setMetaData({});
+    setResultJSON({});
   }
 
   /**
@@ -56,9 +59,11 @@ export default function useAnswerStore() {
     } else {
       const edges = [];
       const edgePublications = {};
+      const edgesJSON = [];
       Object.values(row.edge_bindings).forEach((value) => {
         value.forEach((kgObject) => {
           const kgEdge = message.knowledge_graph.edges[kgObject.id];
+          edgesJSON.push(kgEdge);
           const graphEdge = {
             id: kgObject.id,
             source: kgEdge.subject,
@@ -83,9 +88,11 @@ export default function useAnswerStore() {
         });
       });
       const nodes = [];
+      const nodesJSON = [];
       Object.entries(row.node_bindings).forEach(([qg_id, value]) => {
         value.forEach((kgObject) => {
           const kgNode = message.knowledge_graph.nodes[kgObject.id];
+          nodesJSON.push(kgNode);
           let { categories } = kgNode;
           if (categories && !Array.isArray(categories)) {
             categories = [categories];
@@ -103,6 +110,8 @@ export default function useAnswerStore() {
       setSelectedResult({ nodes, edges });
       setSelectedRowId(rowId);
       setMetaData(edgePublications);
+      // store full result JSON
+      setResultJSON({ nodes: nodesJSON, edges: edgesJSON });
     }
   }
 
@@ -126,6 +135,7 @@ export default function useAnswerStore() {
     tableHeaders,
     selectedResult,
     selectedRowId,
+    resultJSON,
     selectRow,
 
     metaData,

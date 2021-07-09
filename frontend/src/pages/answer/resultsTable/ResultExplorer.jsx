@@ -259,6 +259,7 @@ export default function ResultExplorer({ answerStore }) {
       {answerStore.metaData && (
         <SupportingPublications
           metaData={answerStore.metaData}
+          result={answerStore.resultJSON}
         />
       )}
     </Paper>

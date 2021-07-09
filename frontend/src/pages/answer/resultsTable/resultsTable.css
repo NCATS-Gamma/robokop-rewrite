@@ -39,3 +39,8 @@
     text-align: center;
     padding-top: 28vh;
 }
+
+#resultJSONContainer {
+    max-height: 300px;
+    overflow-y: auto;
+}
